@@ -1,0 +1,57 @@
+
+A Go interface to the Amazon Product Advertising API.
+
+Currently only ItemSearch and ItemLookup calls are supported,
+but any others should be easy to add. See the ItemSearch
+and ItemLookup implementations for the pattern.
+
+==============================================================
+
+package main
+
+import (
+	"fmt"
+	"github.com/agentio/amazonProductAdvertisingAPI"
+)
+
+func main() {
+	accessKey := "YOURS-GOES-HERE"
+	accessSecret := "YOURS-GOES-HERE"
+	associateTag := "YOURS-GOES-HERE"
+	region := "YOURS-GOES-HERE"
+	connection := &amazonProductAdvertisingAPI.Connection{accessKey, accessSecret, associateTag, region}
+
+	fmt.Printf("\n\nTest 1: lookup an item by ASIN\n")
+	lookupResponse, err := connection.ItemLookup(map[string]string{
+		"Operation":     "ItemLookup",
+		"ItemId":        "1469769166",
+		"ResponseGroup": "Medium",
+		"IdType":        "ASIN",
+	})
+	if err == nil {
+		fmt.Printf("\n\n\n%+v\n", lookupResponse)
+		if lookupResponse.Request.IsValid {
+			for _, item := range lookupResponse.Items {
+				fmt.Printf("ASIN: %s\n", item.ASIN)
+				fmt.Printf("DetailPageURL: %s\n", item.DetailPageURL)
+				fmt.Printf("Author: %s\n", item.Author)
+				fmt.Printf("Price: %s\n", item.Price)
+				fmt.Printf("Medium Image URL: %s\n", item.MediumImage.URL)
+			}
+		}
+	} else {
+		fmt.Printf("ERROR %v\n", err)
+	}
+
+	fmt.Printf("\n\nTest 2: search for items by keywords\n")
+	searchResponse, err := connection.ItemSearch(map[string]string{
+		"Operation":   "ItemSearch",
+		"SearchIndex": "Books",
+		"Keywords":    "golang,programming",
+	})
+	if err == nil {
+		fmt.Printf("\n\n\n%+v\n", searchResponse)
+	} else {
+		fmt.Printf("ERROR %v\n", err)
+	}
+}
