@@ -19,7 +19,11 @@ func main() {
 	accessSecret := "YOURS-GOES-HERE"
 	associateTag := "YOURS-GOES-HERE"
 	region := "YOURS-GOES-HERE"
-	connection := &amazonProductAdvertisingAPI.Connection{accessKey, accessSecret, associateTag, region}
+	connection := &amazonProductAdvertisingAPI.Connection{
+		accessKey,
+		accessSecret,
+		associateTag,
+		region}
 
 	fmt.Printf("\n\nTest 1: lookup an item by ASIN\n")
 	lookupResponse, err := connection.ItemLookup(map[string]string{
@@ -33,10 +37,12 @@ func main() {
 		if lookupResponse.Request.IsValid {
 			for _, item := range lookupResponse.Items {
 				fmt.Printf("ASIN: %s\n", item.ASIN)
-				fmt.Printf("DetailPageURL: %s\n", item.DetailPageURL)
+				fmt.Printf("DetailPageURL: %s\n",
+					item.DetailPageURL)
 				fmt.Printf("Author: %s\n", item.Author)
 				fmt.Printf("Price: %s\n", item.Price)
-				fmt.Printf("Medium Image URL: %s\n", item.MediumImage.URL)
+				fmt.Printf("Medium Image URL: %s\n",
+					item.MediumImage.URL)
 			}
 		}
 	} else {
