@@ -24,8 +24,22 @@ type Connection struct {
 	Region          string
 }
 
-type Image struct {
+type SmallImage struct {
+	XMLName xml.Name `xml:"SmallImage"`
+	URL     string
+	Height  uint16
+	Width   uint16
+}
+
+type MediumImage struct {
 	XMLName xml.Name `xml:"MediumImage"`
+	URL     string
+	Height  uint16
+	Width   uint16
+}
+
+type LargeImage struct {
+	XMLName xml.Name `xml:"LargeImage"`
 	URL     string
 	Height  uint16
 	Width   uint16
@@ -36,11 +50,15 @@ type Item struct {
 	ASIN          string
 	URL           string
 	DetailPageURL string
-	Author        string `xml:"ItemAttributes>Author"`
-	Price         string `xml:"ItemAttributes>ListPrice>FormattedPrice"`
-	PriceRaw      string `xml:"ItemAttributes>ListPrice>Amount"`
-	Title         string `xml:"ItemAttributes>Title"`
-	MediumImage   Image
+	Author        []string `xml:"ItemAttributes>Author"`
+	Price         string   `xml:"ItemAttributes>ListPrice>FormattedPrice"`
+	PriceRaw      string   `xml:"ItemAttributes>ListPrice>Amount"`
+	Title         string   `xml:"ItemAttributes>Title"`
+	ISBN          string   `xml:"ItemAttributes>ISBN"`
+	Publisher     string   `xml:"ItemAttributes>Publisher"`
+	SmallImage    SmallImage
+	MediumImage   MediumImage
+	LargeImage    LargeImage
 }
 
 type Request struct {
